@@ -13,6 +13,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class AccountService {
     private final AccountRepository accountRepository;
+    private final OperationListService operationListService;
     public Account getAccount(Long accountId) {
         return accountRepository.findById(accountId).orElse(null);
     }
@@ -40,11 +41,13 @@ public class AccountService {
 
     public String takeMoney(Long accountId, double howMuchTake) {
         var account = getAccount(accountId);
+        short operationType = 209;
         if (howMuchTake <= 0 && getBalance(accountId) >= getBalance(accountId) - howMuchTake) {
             return "Insufficient funds or incorrect data, try again";
         } else {
             account.setBalance(getBalance(accountId) - howMuchTake);
             updateAccountAll(account);
+            operationListService.createOperationList(accountId, operationType, howMuchTake);
             return "The operation was successful! Your balance is " + getBalance(accountId) + "$";
         }
 
@@ -52,14 +55,28 @@ public class AccountService {
 
     public String putMoney(Long accountId, double howMuchPut) {
         var account = getAccount(accountId);
+        short operationType = 309;
         if (howMuchPut <= 0 && getBalance(accountId) <= getBalance(accountId) + howMuchPut){
             return "Incorrect data, try again";
         }
         else {
             account.setBalance(getBalance(accountId) + howMuchPut);
             updateAccountAll(account);
+            operationListService.createOperationList(accountId, operationType, howMuchPut);
             return "The operation was successful! Your balance is " + getBalance(accountId) + "$";
         }
     }
-
+    public String transferMoney(Long fromAccountId, Long beforeAccountId, double howMuchPut) {
+        short operationType = 609;
+        //А если нет аккаунта?
+        if(howMuchPut <= 0 && howMuchPut > getBalance(fromAccountId)) {
+            return "Incorrect, try again";
+        } else {
+            takeMoney(fromAccountId, howMuchPut);
+            putMoney(beforeAccountId, howMuchPut);
+            //Подумаю
+            operationListService.createOperationList(fromAccountId, operationType, howMuchPut);
+            return "The transfer money was successful!";
+        }
+    }
 }

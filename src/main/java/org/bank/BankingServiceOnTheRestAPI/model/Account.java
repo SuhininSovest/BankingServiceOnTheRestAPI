@@ -1,13 +1,12 @@
 package org.bank.BankingServiceOnTheRestAPI.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -20,5 +19,8 @@ public class Account {
     private long accountId;
     private long clientId;
     private double balance;
+    @OneToMany
+    @JoinColumn(name = "accountId")
+    private List<OperationList> operationList;
 
 }
