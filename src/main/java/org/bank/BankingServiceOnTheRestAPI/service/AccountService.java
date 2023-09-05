@@ -43,7 +43,7 @@ public class AccountService {
     public String takeMoney(Long accountId, double howMuchTake) {
         var account = getAccount(accountId);
         short operationType = 209;
-        if (howMuchTake <= 0 || getBalance(accountId) >= getBalance(accountId) - howMuchTake) {
+        if (howMuchTake <= 0 && getBalance(accountId) >= getBalance(accountId) - howMuchTake) {
             return "Insufficient funds or incorrect data, try again";
         } else {
             account.setBalance(getBalance(accountId) - howMuchTake);
@@ -57,7 +57,7 @@ public class AccountService {
     public String putMoney(Long accountId, double howMuchPut) {
         var account = getAccount(accountId);
         short operationType = 309;
-        if (howMuchPut <= 0 || getBalance(accountId) <= getBalance(accountId) + howMuchPut){
+        if (howMuchPut <= 0 && getBalance(accountId) <= getBalance(accountId) + howMuchPut){
             return "Incorrect data, try again";
         }
         else {

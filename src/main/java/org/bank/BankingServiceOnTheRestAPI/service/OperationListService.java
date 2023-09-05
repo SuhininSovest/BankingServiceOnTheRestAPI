@@ -46,6 +46,7 @@ public class OperationListService {
         operationListRepository.deleteById(operationId);
     }
     //AllArg. Output a list of operations for a certain period of time, you can send a date in the format dd/MM/yyyy to start
+    //http://localhost:8090/account/1/operationList?fromDate=04/09/2023&beforeDate=06/09/2023
     public List<OperationList> getOperationList(Long accountId, String fromDate, String beforeDate) {
         List<OperationList> operationLists = findAll();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");

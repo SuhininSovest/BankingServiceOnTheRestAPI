@@ -30,9 +30,12 @@ public class OperationListController {
         return operationListService.getOperationListById(accountId);
     }
 
-    @GetMapping("/account/{accountId}/operationList/{fromDate}/{beforeDate}")
-    public ResponseEntity<List<OperationList>> getOperationList(@PathVariable Long accountId, @PathVariable String fromDate, @PathVariable String beforeDate) {
-        return (ResponseEntity<List<OperationList>>) operationListService.getOperationList(accountId, fromDate, beforeDate);
+    @GetMapping("/account/{accountId}/operationList")
+    public ResponseEntity<List<OperationList>> getOperationList(
+            @PathVariable Long accountId,
+            @RequestParam(name = "fromDate", required = false) String fromDate,
+            @RequestParam(name = "beforeDate", required = false) String beforeDate)  {
+        return new ResponseEntity<>(operationListService.getOperationList(accountId, fromDate, beforeDate), HttpStatus.OK);
     }
 
     @GetMapping("/operationAll")
