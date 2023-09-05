@@ -21,6 +21,10 @@ public class OperationListService {
     public OperationList getOperationId(Long operationId) {
         return operationListRepository.findById(operationId).orElse(null);
     }
+    //Output of the entire OperationList (For analysts and employees)
+    public List<OperationList> findAll() {
+        return operationListRepository.findAll();
+    }
     // create
     public OperationList createOperationList(OperationListDTO dto) {
         return operationListRepository.save(OperationList.builder()
@@ -42,7 +46,8 @@ public class OperationListService {
         operationListRepository.deleteById(operationId);
     }
     //AllArg. Output a list of operations for a certain period of time, you can send a date in the format dd/MM/yyyy to start
-    public List<OperationList> getOperationList(List<OperationList> operationLists, Long accountId, String fromDate, String beforeDate) {
+    public List<OperationList> getOperationList(Long accountId, String fromDate, String beforeDate) {
+        List<OperationList> operationLists = findAll();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         return operationLists.stream()
                 .filter(operationList -> operationList.getAccountId() == accountId)
@@ -57,15 +62,10 @@ public class OperationListService {
                 .collect(Collectors.toList());
     }
     //NoDate. Displaying a list of operations for a specific account
-    public List<OperationList> getOperationListById(List<OperationList> operationLists, Long accountId) {
+    public List<OperationList> getOperationListById(Long accountId) {
+        List<OperationList> operationLists = findAll();
         return operationLists.stream()
                 .filter(operationList -> operationList.getAccountId() == accountId)
                 .collect(Collectors.toList());
     }
-    //Output of the entire OperationList (For analysts and employees)
-    public List<OperationList> findAll() {
-        return operationListRepository.findAll();
-    }
-
-
 }

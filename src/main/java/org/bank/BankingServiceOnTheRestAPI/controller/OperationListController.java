@@ -23,15 +23,18 @@ public class OperationListController {
         operationListService.deleteOperation(operationId);
     }
     //Output a list of operations for a certain period of time, you can send a date in the format dd/MM/yyyy to start
+
+    @GetMapping("/operationList/{accountId}")
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public List<OperationList> getOperationListById(@PathVariable Long accountId) {
+        return operationListService.getOperationListById(accountId);
+    }
+
     @GetMapping("/account/{accountId}/operationList/{fromDate}/{beforeDate}")
-    public ResponseEntity<List<OperationList>> readOperationListWithDate(@PathVariable Long accountId, @PathVariable String fromDate, @PathVariable String beforeDate) {
-        return (ResponseEntity<List<OperationList>>) operationListService.getOperationList(operationListService.findAll(), accountId, fromDate, beforeDate);
+    public ResponseEntity<List<OperationList>> getOperationList(@PathVariable Long accountId, @PathVariable String fromDate, @PathVariable String beforeDate) {
+        return (ResponseEntity<List<OperationList>>) operationListService.getOperationList(accountId, fromDate, beforeDate);
     }
-    //Displaying a list of operations for a specific account
-    @GetMapping("/account/{accountId}/operationList")
-    public ResponseEntity<List<OperationList>> getOperationListById(@PathVariable Long accountId) {
-        return (ResponseEntity<List<OperationList>>) operationListService.getOperationListById(operationListService.findAll(), accountId);
-    }
+
     @GetMapping("/operationAll")
     public ResponseEntity<List<OperationList>> readAll() {
         return new ResponseEntity<>(operationListService.findAll(), HttpStatus.OK);

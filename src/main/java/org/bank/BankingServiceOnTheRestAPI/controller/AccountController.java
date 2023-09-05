@@ -63,4 +63,8 @@ public class AccountController {
     public String putMoneyById(@PathVariable Long accountId, @PathVariable double howMuchPut) {
         return accountService.putMoney(accountId, howMuchPut);
     }
+    @PutMapping("/transferMoney/{fromAccountId}/{beforeAccountId}/{howMuchPut}")
+    public String transferMoney(@PathVariable Long fromAccountId, @PathVariable Long beforeAccountId, @PathVariable double howMuchPut){
+        return accountService.transferMoney(fromAccountId, beforeAccountId, howMuchPut);
+    }
 }
